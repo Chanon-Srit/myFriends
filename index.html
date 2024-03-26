@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            color: #333; /* Dark gray text */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1, h2 {
+            color: #000; /* Black heading text */
+        }
+
+        #formContainer {
+            background-color: #fff; /* White background for form container */
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc; /* Light gray border */
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #333; /* Dark gray button */
+            color: #fff; /* White text */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #555; /* Darker gray on hover */
+        }
+
+        #result {
+            background-color: #fff; /* White background for result container */
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+    </style>
+</head>
+<body>
+    <h1>กรุณากรอกข้อมูล</h1>
+    <div id="formContainer">
+        <!-- ตำแหน่งที่จะใส่ฟอร์ม -->
+    </div>
+    <button onclick="addNewForm()">เพิ่มฟอร์มเพื่อรับข้อมูล</button>
+    <button onclick="calculateStatistics()">Submit</button>
+
+    <div id="result"></div>
+
+    <script>
+        var formCounter = 0;
+
+        function generateRandomNumber() {
+            return Math.floor(Math.random() * 9) + 1;
+        }
+
+        function addNewForm() {
+            var formContainer = document.getElementById("formContainer");
+            formContainer.innerHTML = ''; // ล้างความสะอาดของ div
+
+            var numberOfForms = generateRandomNumber();
+            for (var i = 0; i < numberOfForms; i++) {
+                var form = document.createElement("form");
+                form.id = "form" + (i + 1);
+
+                form.innerHTML = `
+                    <h2>ฟอร์มที่ ${i + 1}</h2>
+                    <label for="name${i}">ชื่อ:</label>
+                    <input type="text" id="name${i}" name="name${i}" required><br><br>
+                    
+                    <label for="age${i}">อายุ:</label>
+                    <input type="number" id="age${i}" name="age${i}" min="1" max="150" required><br><br>
+                `;
+
+                formContainer.appendChild(form);
+                formCounter++;
+            }
+        }
+
+        function calculateStatistics() {
+            var totalAge = 0;
+            var numberOfPeople = 0;
+            var minAge = Infinity;
+            var maxAge = -Infinity;
+            var minNames = [];
+            var maxNames = [];
+
+            for (var i = 0; i < formCounter; i++) {
+                var ageInput = document.getElementById("age" + i);
+                var nameInput = document.getElementById("name" + i);
+
+                if (ageInput && nameInput) {
+                    var age = parseInt(ageInput.value);
+                    var name = nameInput.value;
+
+                    if (!isNaN(age)) {
+                        totalAge += age;
+                        numberOfPeople++;
+
+                        if (age < minAge) {
+                            minAge = age;
+                            minNames = [name];
+                        } else if (age === minAge) {
+                            minNames.push(name);
+                        }
+
+                        if (age > maxAge) {
+                            maxAge = age;
+                            maxNames = [name];
+                        } else if (age === maxAge) {
+                            maxNames.push(name);
+                        }
+                    }
+                }
+            }
+
+            var averageAge = totalAge / numberOfPeople;
+
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = `
+                <h2>ผลลัพธ์</h2>
+                <p>อายุรวม: ${totalAge} ปี</p>
+                <p>อายุเฉลี่ย: ${averageAge.toFixed(2)} ปี</p>
+                <p>ชื่อคนที่มีอายุน้อยที่สุด: ${minNames.join(", ")}, อายุ ${minAge} ปี</p>
+                <p>ชื่อคนที่มีอายุมากที่สุด: ${maxNames.join(", ")}, อายุ ${maxAge} ปี</p>
+            `;
+
+            // Reset form
+            var formContainer = document.getElementById("formContainer");
+            formContainer.innerHTML = ''; // ล้างความสะอาดของ div
+            formCounter = 0; // Reset formCounter ให้เริ่มต้นที่ 0 อีกครั้ง
+        }
+    </script>
+</body>
+</html>
