@@ -1,0 +1,2 @@
+# myFriends
+JS Exercises
