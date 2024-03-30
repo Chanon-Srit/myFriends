@@ -4,6 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
     <h1>กรุณากรอกข้อมูล</h1>
@@ -13,6 +46,8 @@
     <button onclick="addNewForm()">เริ่มต้นใหม่</button>
     <button type="button" onclick="calculateTotalAge()">คำนวณอายุรวม</button>
     <button type="button" onclick="calculateAverageAge()">คำนวณอายุเฉลี่ย</button>
+    <button type="button" onclick="findMinAgePerson()">คำนวณชื่อคนที่มีอายุน้อยที่สุด</button>
+    <button type="button" onclick="findMaxAgePerson()">คำนวณชื่อคนที่มีอายุมากที่สุด</button>
 
     <div id="result"></div>
 
@@ -46,7 +81,34 @@
             }
         }
 
+        function isFormValid(age, name) {
+            return !isNaN(age) && name.trim() !== '';
+        }
+
+        function checkFormsCompletion() {
+            for (var i = 0; i < formCounter; i++) {
+                var ageInput = document.getElementById("age" + i);
+                var nameInput = document.getElementById("name" + i);
+
+                if (ageInput && nameInput) {
+                    var age = parseInt(ageInput.value);
+                    var name = nameInput.value;
+
+                    if (!isFormValid(age, name)) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         function calculateTotalAge() {
+            var allFormsCompleted = checkFormsCompletion();
+            if (!allFormsCompleted) {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                return;
+            }
+
             var totalAge = 0;
 
             for (var i = 0; i < formCounter; i++) {
@@ -54,10 +116,7 @@
 
                 if (ageInput) {
                     var age = parseInt(ageInput.value);
-
-                    if (!isNaN(age)) {
-                        totalAge += age;
-                    }
+                    totalAge += age;
                 }
             }
 
@@ -65,6 +124,12 @@
         }
 
         function calculateAverageAge() {
+            var allFormsCompleted = checkFormsCompletion();
+            if (!allFormsCompleted) {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                return;
+            }
+
             var totalAge = 0;
             var numberOfPeople = 0;
 
@@ -73,16 +138,73 @@
 
                 if (ageInput) {
                     var age = parseInt(ageInput.value);
-
-                    if (!isNaN(age)) {
-                        totalAge += age;
-                        numberOfPeople++;
-                    }
+                    totalAge += age;
+                    numberOfPeople++;
                 }
             }
 
             var averageAge = totalAge / numberOfPeople;
             displayResult("อายุเฉลี่ย", averageAge);
+        }
+
+        function findMinAgePerson() {
+            var allFormsCompleted = checkFormsCompletion();
+            if (!allFormsCompleted) {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                return;
+            }
+
+            var minAge = Infinity;
+            var minNames = [];
+
+            for (var i = 0; i < formCounter; i++) {
+                var ageInput = document.getElementById("age" + i);
+                var nameInput = document.getElementById("name" + i);
+
+                if (ageInput && nameInput) {
+                    var age = parseInt(ageInput.value);
+                    var name = nameInput.value;
+
+                    if (age < minAge) {
+                        minAge = age;
+                        minNames = [name];
+                    } else if (age === minAge) {
+                        minNames.push(name);
+                    }
+                }
+            }
+
+            displayResult("ชื่อคนที่มีอายุน้อยที่สุด", minNames.join(", ") + ", อายุ " + minAge + " ปี");
+        }
+
+        function findMaxAgePerson() {
+            var allFormsCompleted = checkFormsCompletion();
+            if (!allFormsCompleted) {
+                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                return;
+            }
+
+            var maxAge = -Infinity;
+            var maxNames = [];
+
+            for (var i = 0; i < formCounter; i++) {
+                var ageInput = document.getElementById("age" + i);
+                var nameInput = document.getElementById("name" + i);
+
+                if (ageInput && nameInput) {
+                    var age = parseInt(ageInput.value);
+                    var name = nameInput.value;
+
+                    if (age > maxAge) {
+                        maxAge = age;
+                        maxNames = [name];
+                    } else if (age === maxAge) {
+                        maxNames.push(name);
+                    }
+                }
+            }
+
+            displayResult("ชื่อคนที่มีอายุมากที่สุด", maxNames.join(", ") + ", อายุ " + maxAge + " ปี");
         }
 
         function displayResult(label, value) {
