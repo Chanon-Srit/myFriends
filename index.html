@@ -43,16 +43,22 @@
     <div id="formContainer">
         <!-- ตำแหน่งที่จะใส่ฟอร์ม -->
     </div>
-    <button onclick="addNewForm()">เริ่มต้นใหม่</button>
-    <button type="button" onclick="calculateTotalAge()">คำนวณอายุรวม</button>
-    <button type="button" onclick="calculateAverageAge()">คำนวณอายุเฉลี่ย</button>
-    <button type="button" onclick="findMinAgePerson()">คำนวณชื่อคนที่มีอายุน้อยที่สุด</button>
-    <button type="button" onclick="findMaxAgePerson()">คำนวณชื่อคนที่มีอายุมากที่สุด</button>
+    <button id="startNewButton">เริ่มต้นใหม่</button>
+    <button id="calculateTotalAgeButton">คำนวณอายุรวม</button>
+    <button id="calculateAverageAgeButton">คำนวณอายุเฉลี่ย</button>
+    <button id="findMinAgeButton">คำนวณชื่อคนที่มีอายุน้อยที่สุด</button>
+    <button id="findMaxAgeButton">คำนวณชื่อคนที่มีอายุมากที่สุด</button>
 
     <div id="result"></div>
 
     <script>
         var formCounter = 0;
+
+        document.getElementById("startNewButton").addEventListener("click", addNewForm);
+        document.getElementById("calculateTotalAgeButton").addEventListener("click", calculateTotalAge);
+        document.getElementById("calculateAverageAgeButton").addEventListener("click", calculateAverageAge);
+        document.getElementById("findMinAgeButton").addEventListener("click", findMinAgePerson);
+        document.getElementById("findMaxAgeButton").addEventListener("click", findMaxAgePerson);
 
         function generateRandomNumber() {
             return Math.floor(Math.random() * 9) + 1;
