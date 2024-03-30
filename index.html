@@ -52,7 +52,7 @@
     <div id="result"></div>
 
     <script>
-        var formCounter = 0;
+        let formCounter = 0;
 
         document.getElementById("startNewButton").addEventListener("click", addNewForm);
         document.getElementById("calculateTotalAgeButton").addEventListener("click", calculateTotalAge);
@@ -61,20 +61,21 @@
         document.getElementById("findMaxAgeButton").addEventListener("click", findMaxAgePerson);
 
         function generateRandomNumber() {
-            return Math.floor(Math.random() * 9) + 1;
+            return Math.floor(Math.random() * 9) + 1; //random number 1-9
         }
 
         function addNewForm() {
-            var formContainer = document.getElementById("formContainer");
-            formContainer.innerHTML = ''; // ล้างความสะอาดของ div
+            const formContainer = document.getElementById("formContainer");//ผูกตัวเเปรกับform
+            formContainer.innerHTML = ''; //reset
 
-            var numberOfForms = generateRandomNumber();
-            for (var i = 0; i < numberOfForms; i++) {
-                var form = document.createElement("form");
+            const numberOfForms = generateRandomNumber();//กำหนดจำนวนฟอร์มตามที่สุ่ม
+
+            for (let i = 0; i < numberOfForms; i++) {
+                const form = document.createElement("form");
                 form.id = "form" + (i + 1);
 
                 form.innerHTML = `
-                    <h2>ฟอร์มที่ ${i + 1}</h2>
+                    <h2>เพื่อนคนที่ ${i + 1}</h2>
                     <label for="name${i}">ชื่อ:</label>
                     <input type="text" id="name${i}" name="name${i}" required><br><br>
                     
@@ -92,13 +93,13 @@
         }
 
         function checkFormsCompletion() {
-            for (var i = 0; i < formCounter; i++) {
-                var ageInput = document.getElementById("age" + i);
-                var nameInput = document.getElementById("name" + i);
+            for (let i = 0; i < formCounter; i++) {
+                const ageInput = document.getElementById("age" + i);
+                const nameInput = document.getElementById("name" + i);
 
                 if (ageInput && nameInput) {
-                    var age = parseInt(ageInput.value);
-                    var name = nameInput.value;
+                    const age = parseInt(ageInput.value);
+                    const name = nameInput.value;
 
                     if (!isFormValid(age, name)) {
                         return false;
@@ -109,19 +110,19 @@
         }
 
         function calculateTotalAge() {
-            var allFormsCompleted = checkFormsCompletion();
+            const allFormsCompleted = checkFormsCompletion();
             if (!allFormsCompleted) {
-                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน");
                 return;
             }
 
-            var totalAge = 0;
+            let totalAge = 0;
 
-            for (var i = 0; i < formCounter; i++) {
-                var ageInput = document.getElementById("age" + i);
+            for (let i = 0; i < formCounter; i++) {
+                const ageInput = document.getElementById("age" + i);
 
                 if (ageInput) {
-                    var age = parseInt(ageInput.value);
+                    const age = parseInt(ageInput.value);
                     totalAge += age;
                 }
             }
@@ -130,46 +131,46 @@
         }
 
         function calculateAverageAge() {
-            var allFormsCompleted = checkFormsCompletion();
+            const allFormsCompleted = checkFormsCompletion();
             if (!allFormsCompleted) {
-                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน");
                 return;
             }
 
-            var totalAge = 0;
-            var numberOfPeople = 0;
+            let totalAge = 0;
+            let numberOfPeople = 0;
 
-            for (var i = 0; i < formCounter; i++) {
-                var ageInput = document.getElementById("age" + i);
+            for (let i = 0; i < formCounter; i++) {
+                const ageInput = document.getElementById("age" + i);
 
                 if (ageInput) {
-                    var age = parseInt(ageInput.value);
+                    const age = parseInt(ageInput.value);
                     totalAge += age;
                     numberOfPeople++;
                 }
             }
 
-            var averageAge = totalAge / numberOfPeople;
+            const averageAge = totalAge / numberOfPeople;
             displayResult("อายุเฉลี่ย", averageAge);
         }
 
         function findMinAgePerson() {
-            var allFormsCompleted = checkFormsCompletion();
+            const allFormsCompleted = checkFormsCompletion();
             if (!allFormsCompleted) {
-                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน");
                 return;
             }
 
-            var minAge = Infinity;
-            var minNames = [];
+            let minAge = Infinity;
+            let minNames = [];
 
-            for (var i = 0; i < formCounter; i++) {
-                var ageInput = document.getElementById("age" + i);
-                var nameInput = document.getElementById("name" + i);
+            for (let i = 0; i < formCounter; i++) {
+                const ageInput = document.getElementById("age" + i);
+                const nameInput = document.getElementById("name" + i);
 
                 if (ageInput && nameInput) {
-                    var age = parseInt(ageInput.value);
-                    var name = nameInput.value;
+                    const age = parseInt(ageInput.value);
+                    const name = nameInput.value;
 
                     if (age < minAge) {
                         minAge = age;
@@ -184,22 +185,22 @@
         }
 
         function findMaxAgePerson() {
-            var allFormsCompleted = checkFormsCompletion();
+            const allFormsCompleted = checkFormsCompletion();
             if (!allFormsCompleted) {
-                alert("กรุณากรอกข้อมูลให้ครบถ้วนในทุกฟอร์ม");
+                alert("กรุณากรอกข้อมูลให้ครบถ้วน");
                 return;
             }
 
-            var maxAge = -Infinity;
-            var maxNames = [];
+            let maxAge = -Infinity;
+            let maxNames = [];
 
-            for (var i = 0; i < formCounter; i++) {
-                var ageInput = document.getElementById("age" + i);
-                var nameInput = document.getElementById("name" + i);
+            for (let i = 0; i < formCounter; i++) {
+                const ageInput = document.getElementById("age" + i);
+                const nameInput = document.getElementById("name" + i);
 
                 if (ageInput && nameInput) {
-                    var age = parseInt(ageInput.value);
-                    var name = nameInput.value;
+                    const age = parseInt(ageInput.value);
+                    const name = nameInput.value;
 
                     if (age > maxAge) {
                         maxAge = age;
@@ -214,7 +215,7 @@
         }
 
         function displayResult(label, value) {
-            var resultDiv = document.getElementById("result");
+            const resultDiv = document.getElementById("result");
             resultDiv.innerHTML = `<h2>${label}</h2><p>${value}</p>`;
         }
     </script>
