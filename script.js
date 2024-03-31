@@ -74,6 +74,7 @@ function calculateTotalAge() {
     }
 
     displayResult("อายุรวม", totalAge);
+    return totalAge;
 }
 
 function calculateAverageAge() {
@@ -83,18 +84,8 @@ function calculateAverageAge() {
         return;
     }
 
-    let totalAge = 0;
-    let numberOfPeople = 0;
-
-    for (let i = 0; i < formCounter; i++) {
-        const ageInput = document.getElementById("age" + i);
-
-        if (ageInput) {
-            const age = parseInt(ageInput.value);
-            totalAge += age;
-            numberOfPeople++;
-        }
-    }
+    let totalAge = calculateTotalAge();
+    const numberOfPeople = formCounter;
 
     const averageAge = totalAge / numberOfPeople;
     displayResult("อายุเฉลี่ย", averageAge);
